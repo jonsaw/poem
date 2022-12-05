@@ -61,7 +61,7 @@ type LanguageArray = SmallVec<[LanguageIdentifier; 8]>;
 /// # });
 /// ```
 pub struct Locale {
-    bundle: I18NBundle,
+    pub bundle: I18NBundle,
 }
 
 impl Locale {
