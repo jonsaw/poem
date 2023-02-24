@@ -7,15 +7,15 @@ use crate::{
     error::ParseRequestPayloadError,
     payload::{ParsePayload, Payload},
     registry::{MetaMediaType, MetaResponse, MetaResponses, MetaSchemaRef, Registry},
-    types::{ParseFromXML, ToXML, Type},
+    types::{ParseFromYAML, ToYAML, Type},
     ApiResponse,
 };
 
-/// A XML payload.
+/// A YAML payload.
 #[derive(Debug, Clone, Eq, PartialEq)]
-pub struct Xml<T>(pub T);
+pub struct Yaml<T>(pub T);
 
-impl<T> Deref for Xml<T> {
+impl<T> Deref for Yaml<T> {
     type Target = T;
 
     fn deref(&self) -> &Self::Target {
@@ -23,21 +23,21 @@ impl<T> Deref for Xml<T> {
     }
 }
 
-impl<T> DerefMut for Xml<T> {
+impl<T> DerefMut for Yaml<T> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
     }
 }
 
-impl<T: Type> Payload for Xml<T> {
-    const CONTENT_TYPE: &'static str = "application/xml; charset=utf-8";
+impl<T: Type> Payload for Yaml<T> {
+    const CONTENT_TYPE: &'static str = "application/yaml; charset=utf-8";
 
     fn check_content_type(content_type: &str) -> bool {
         matches!(content_type.parse::<mime::Mime>(), Ok(content_type) if content_type.type_() == "application"
-                && (content_type.subtype() == "xml"
+                && (content_type.subtype() == "yaml"
                 || content_type
                     .suffix()
-                    .map_or(false, |v| v == "xml")))
+                    .map_or(false, |v| v == "yaml")))
     }
 
     fn schema_ref() -> MetaSchemaRef {
@@ -51,7 +51,7 @@ impl<T: Type> Payload for Xml<T> {
 }
 
 #[poem::async_trait]
-impl<T: ParseFromXML> ParsePayload for Xml<T> {
+impl<T: ParseFromYAML> ParsePayload for Yaml<T> {
     const IS_REQUIRED: bool = true;
 
     async fn from_request(request: &Request, body: &mut RequestBody) -> Result<Self> {
@@ -59,27 +59,25 @@ impl<T: ParseFromXML> ParsePayload for Xml<T> {
         let value = if data.is_empty() {
             Value::Null
         } else {
-            quick_xml::de::from_str(&String::from_utf8(data).unwrap_or_default()).map_err(
-                |err| ParseRequestPayloadError {
-                    reason: err.to_string(),
-                },
-            )?
+            serde_yaml::from_slice(&data).map_err(|err| ParseRequestPayloadError {
+                reason: err.to_string(),
+            })?
         };
 
-        let value = T::parse_from_xml(Some(value)).map_err(|err| ParseRequestPayloadError {
+        let value = T::parse_from_yaml(Some(value)).map_err(|err| ParseRequestPayloadError {
             reason: err.into_message(),
         })?;
         Ok(Self(value))
     }
 }
 
-impl<T: ToXML> IntoResponse for Xml<T> {
+impl<T: ToYAML> IntoResponse for Yaml<T> {
     fn into_response(self) -> Response {
-        poem::web::Xml(self.0.to_xml()).into_response()
+        poem::web::Yaml(self.0.to_yaml()).into_response()
     }
 }
 
-impl<T: ToXML> ApiResponse for Xml<T> {
+impl<T: ToYAML> ApiResponse for Yaml<T> {
     fn meta() -> MetaResponses {
         MetaResponses {
             responses: vec![MetaResponse {
@@ -99,4 +97,4 @@ impl<T: ToXML> ApiResponse for Xml<T> {
     }
 }
 
-impl_apirequest_for_payload!(Xml<T>, T: ParseFromXML);
+impl_apirequest_for_payload!(Yaml<T>, T: ParseFromYAML);

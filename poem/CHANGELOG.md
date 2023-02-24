@@ -4,9 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [1.3.55] 2023-02-18
+
+- fix: export real error `RedisSessionError` for `redis-session` [#501](fix: export real error `RedisSessionError` for `redis-session`)
+- Add From<HashMap> implementation for I18NArgs [#507](https://github.com/poem-web/poem/pull/507)
+- fix errors when parse yaml & xml request [#498](https://github.com/poem-web/poem/pull/498)
+- fix `SSE::keep_alive` caused the event stream to not terminate properly.
+
+# [1.3.53] 2023-01-31
+
+- fix: static_files percent encode filename [#495](https://github.com/poem-web/poem/pull/495)
+- bump `tokio-tungstenite` from `0.17.1`to `0.18.0` [#463](https://github.com/poem-web/poem/pull/463)
+- bump base64 from `0.13.0` to `0.21.0`
+
+# [1.3.52] 2023-01-13
+
+- Add yaml support [#476](https://github.com/poem-web/poem/pull/476)
+
+# [1.3.51] 2023-01-11
+
+- More compact packing of random bytes in session_id [#437](https://github.com/poem-web/poem/pull/437)
+- Fixes opentelemetry_metrics: Correct duration conversion [#449](https://github.com/poem-web/poem/pull/449)
+- Support fall back to the index file when serving static files [#450](https://github.com/poem-web/poem/pull/450)
+- Record and use PathPattern in response [#462](https://github.com/poem-web/poem/pull/462)
+- listener::rustls: add support for elliptic curve private keys [#460](https://github.com/poem-web/poem/pull/460)
+- Add `Error::set_error_message` to change the error message
+
 # [1.3.50] 2022-12-01
 
-- Fixes not enough randomness in session keys([#430](https://github.com/poem-web/poem/issues/430))
+- Fixes not enough randomness in session keys [#430](https://github.com/poem-web/poem/issues/430)
 
 # [1.3.49] 2022-11-21
 

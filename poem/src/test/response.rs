@@ -60,7 +60,7 @@ impl TestResponse {
             .0
             .headers()
             .get(&key)
-            .unwrap_or_else(|| panic!("expect header `{}`", key));
+            .unwrap_or_else(|| panic!("expect header `{key}`"));
 
         assert_eq!(value2, value);
     }
@@ -83,7 +83,7 @@ impl TestResponse {
             .0
             .headers()
             .get(&key)
-            .unwrap_or_else(|| panic!("expect header `{}`", key));
+            .unwrap_or_else(|| panic!("expect header `{key}`"));
         let values = value
             .to_str()
             .expect("valid header value")
@@ -164,6 +164,15 @@ impl TestResponse {
         assert_eq!(
             self.0.into_body().into_string().await.expect("expect body"),
             quick_xml::se::to_string(&xml).expect("valid xml")
+        );
+    }
+
+    /// Asserts that the response body is XML and it equals to `xml`.
+    #[cfg(feature = "yaml")]
+    pub async fn assert_yaml(self, yaml: impl Serialize) {
+        assert_eq!(
+            self.0.into_body().into_string().await.expect("expect body"),
+            serde_yaml::to_string(&yaml).expect("valid yaml")
         );
     }
 

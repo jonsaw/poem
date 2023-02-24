@@ -9,15 +9,18 @@
     <img src="https://img.shields.io/badge/unsafe-forbidden-success.svg?style=flat-square"
       alt="Unsafe Rust forbidden" />
   </a>
-  <a href="https://blog.rust-lang.org/2021/11/01/Rust-1.62.0.html">
-    <img src="https://img.shields.io/badge/rustc-1.62.0+-ab6000.svg"
-      alt="rustc 1.62.0+" />
+  <a href="https://blog.rust-lang.org/2022/09/22/Rust-1.64.0.html">
+    <img src="https://img.shields.io/badge/rustc-1.64.0+-ab6000.svg"
+      alt="rustc 1.64.0+" />
   </a>
   <a href="https://discord.gg/qWWNxwasb7">
     <img src="https://img.shields.io/discord/932986985604333638.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" />
   </a>
   <a href="https://deps.rs/repo/github/poem-web/poem">
     <img src="https://img.shields.io/librariesio/release/cargo/poem.svg" />
+  </a>
+  <a href="https://crates.io/crates/poem">
+    <img src="https://img.shields.io/crates/d/poem.svg" />
   </a>
 </div>
 <p align="center"><code>A program is like a poem, you cannot write a poem without writing it. --- Dijkstra</code></p>

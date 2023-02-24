@@ -112,6 +112,7 @@
 #![forbid(unsafe_code)]
 #![deny(private_in_public, unreachable_pub)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
+#![warn(rustdoc::broken_intra_doc_links)]
 #![warn(missing_docs)]
 
 /// Macros to help with building custom payload types.
@@ -124,14 +125,19 @@ pub mod param;
 pub mod payload;
 #[doc(hidden)]
 pub mod registry;
-pub mod response;
+mod response;
 pub mod types;
 #[doc(hidden)]
 pub mod validation;
 
 mod base;
 mod openapi;
-#[cfg(any(feature = "swagger-ui", feature = "rapidoc", feature = "redoc"))]
+#[cfg(any(
+    feature = "swagger-ui",
+    feature = "rapidoc",
+    feature = "redoc",
+    feature = "openapi-explorer"
+))]
 mod ui;
 
 pub use base::{
